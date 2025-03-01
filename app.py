@@ -5,13 +5,13 @@ import os
 # Define CSV file path
 DATA_FILE = 'survey_responses.csv'
 
-# Initialize the CSV file if not present
-if not os.path.exists(DATA_FILE):
-    pd.DataFrame(columns=[
-        'Job Title', 'Role Tenure', 'Company Tenure', 'Promotion',
-        'Performance Scores', 'Potential Scores', 'Familiarity', 'Self Placement',
-        'Manager Communication', 'Model Accuracy', 'Support Needed'
-    ]).to_csv(DATA_FILE, index=False)
+# # Initialize the CSV file if not present
+# if not os.path.exists(DATA_FILE):
+#     pd.DataFrame(columns=[
+#         'Job Title', 'Role Tenure', 'Company Tenure', 'Promotion',
+#         'Performance Scores', 'Potential Scores', 'Familiarity', 'Self Placement',
+#         'Manager Communication', 'Model Accuracy', 'Support Needed'
+#     ]).to_csv(DATA_FILE, index=False)
 
 # Page title and intro
 st.title('📊 HR Project: Evaluating the 9-Box Talent Management Model')
