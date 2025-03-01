@@ -1,38 +1,17 @@
 import streamlit as st
 import pandas as pd
-import pymysql
+import os
 
-# Database connection setup
-db_secrets = st.secrets["database"]
+# Define CSV file path
+DATA_FILE = 'survey_responses.csv'
 
-conn = pymysql.connect(
-    host=db_secrets["host"],
-    user=db_secrets["user"],
-    password=db_secrets["password"],
-    database=db_secrets["database"],
-    port=int(db_secrets["port"])
-)
-cursor = conn.cursor()
-
-# Create table if not exists
-create_table_query = '''
-CREATE TABLE IF NOT EXISTS survey_responses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    job_title VARCHAR(255),
-    role_tenure VARCHAR(50),
-    company_tenure VARCHAR(50),
-    promotion VARCHAR(50),
-    performance_scores TEXT,
-    potential_scores TEXT,
-    familiarity VARCHAR(255),
-    self_placement VARCHAR(255),
-    manager_communication VARCHAR(255),
-    model_accuracy TEXT,
-    support_needed TEXT
-);
-'''
-cursor.execute(create_table_query)
-conn.commit()
+# Initialize the CSV file if not present
+if not os.path.exists(DATA_FILE):
+    pd.DataFrame(columns=[
+        'Job Title', 'Role Tenure', 'Company Tenure', 'Promotion',
+        'Performance Scores', 'Potential Scores', 'Familiarity', 'Self Placement',
+        'Manager Communication', 'Model Accuracy', 'Support Needed'
+    ]).to_csv(DATA_FILE, index=False)
 
 # Page title and intro
 st.title('📊 HR Project: Evaluating the 9-Box Talent Management Model')
@@ -44,7 +23,7 @@ Hi there! I'm a student working on a Human Resource Management project focused o
 Your input will help me assess how this tool works in real-world settings — so thank you for sharing your honest thoughts! It’ll take less than 5 minutes.
 ''')
 
-# Collect user inputs
+# Section 1: Background Information
 st.header('Section 1: Background Information')
 
 job_title = st.text_input("1. What is your current job title?")
@@ -61,8 +40,10 @@ promotion = st.radio("4. Have you received a promotion in the last 2 years?", [
     "Yes", "No", "Currently being considered for one"
 ])
 
-# Collect performance scores
+# Section 2: Self-Assessment – Performance
 st.header('Section 2: Self-Assessment – Performance')
+
+st.markdown("On a scale of 1-5, rate yourself on the following aspects of job performance:")
 
 performance_qs = [
     "I consistently meet or exceed the goals and targets set for my role.",
@@ -72,10 +53,14 @@ performance_qs = [
     "My work directly contributes to team or company success."
 ]
 
-performance_scores = [st.slider(q, 1, 5) for q in performance_qs]
+performance_scores = []
+for q in performance_qs:
+    performance_scores.append(st.slider(q, 1, 5))
 
-# Collect potential scores
+# Section 3: Self-Assessment – Potential
 st.header('Section 3: Self-Assessment – Potential')
+
+st.markdown("On a scale of 1-5, rate yourself on the following indicators of future potential:")
 
 potential_qs = [
     "I actively seek opportunities to learn new skills and grow.",
@@ -85,9 +70,11 @@ potential_qs = [
     "I have a clear plan for advancing my career within this company."
 ]
 
-potential_scores = [st.slider(q, 1, 5) for q in potential_qs]
+potential_scores = []
+for q in potential_qs:
+    potential_scores.append(st.slider(q, 1, 5))
 
-# Understanding the 9-box model
+# Section 4: Understanding the 9-Box Model
 st.header('Section 4: Understanding the 9-Box Model')
 
 familiarity = st.radio("15. Are you familiar with the 9-box talent management model used to assess performance and potential?", [
@@ -102,7 +89,7 @@ self_placement = st.radio("16. If you had to place yourself on the 9-box grid, w
     "I’m not sure"
 ])
 
-# Feedback section
+# Section 5: Feedback on Career Development
 st.header('Section 5: Feedback on Career Development')
 
 manager_communication = st.radio("17. How clearly has your manager communicated your position on the 9-box grid?", [
@@ -114,24 +101,23 @@ model_accuracy = st.text_area("18. Do you feel the 9-box model accurately reflec
 
 support_needed = st.text_area("19. What additional support would help you move to a higher box in the 9-box grid?")
 
-# Store data in database
+# Submit button and save data
 if st.button('Submit Survey'):
-    insert_query = '''
-    INSERT INTO survey_responses (
-        job_title, role_tenure, company_tenure, promotion,
-        performance_scores, potential_scores, familiarity, self_placement,
-        manager_communication, model_accuracy, support_needed
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    '''
-    cursor.execute(insert_query, (
-        job_title, role_tenure, company_tenure, promotion,
-        str(performance_scores), str(potential_scores), familiarity, self_placement,
-        manager_communication, model_accuracy, support_needed
-    ))
-    conn.commit()
+    new_data = pd.DataFrame({
+        'Job Title': [job_title],
+        'Role Tenure': [role_tenure],
+        'Company Tenure': [company_tenure],
+        'Promotion': [promotion],
+        'Performance Scores': [performance_scores],
+        'Potential Scores': [potential_scores],
+        'Familiarity': [familiarity],
+        'Self Placement': [self_placement],
+        'Manager Communication': [manager_communication],
+        'Model Accuracy': [model_accuracy],
+        'Support Needed': [support_needed]
+    })
+    new_data.to_csv(DATA_FILE, mode='a', header=False, index=False)
     st.success("✅ Thank you for your support! Your feedback has been recorded.")
-
-conn.close()
 
 st.markdown('''
 If you have any additional thoughts or ideas, please feel free to share them!
