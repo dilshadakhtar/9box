@@ -6,6 +6,8 @@ from streamlit_gsheets import GSheetsConnection
 st.title("Read Google Sheet as DataFrame")
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="Sheet1")
+df = conn.read()
 
-st.dataframe(df)
+# Print results.
+for row in df.itertuples():
+    st.write(f"{row.name} has a :{row.pet}:")
