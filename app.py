@@ -99,10 +99,10 @@ def tip():
     st.info("This helps GPT slow down and think through each part of the problem carefully, just like a person would. As it encourages the model to break down the problem into manageable steps—mimicking the detailed reasoning often found in its training data—which can lead to more accurate and comprehensive answers.")
     st.write("**See the difference:**")
     st.write(" *Before using the prompt:* GPT gave the wrong answer.")
-    st.image("image/Before.png", "Before Adding the Prompt")
+    st.image("Before.png", "Before Adding the Prompt")
     st.write("✅ *After using the prompt:* GPT provided the correct answer.")
-    st.image("image/After1.png")
-    st.image("image/After2.png", "After Adding the Prompt")
+    st.image("After1.png")
+    st.image("After2.png", "After Adding the Prompt")
     st.link_button("Read More", "https://arxiv.org/pdf/2309.03409")
 
 # Submission logic
@@ -124,4 +124,4 @@ if st.button("Submit ✅"):
         st.cache_data.clear()
         st.success("🎉 Thank you for completing the survey! Your feedback is invaluable.")
         st.balloons()
-        tip()
+        # tip()
