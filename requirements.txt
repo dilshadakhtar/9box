@@ -1,3 +1,5 @@
 streamlit
-pymysql
 st-gsheets-connection
+pandas
+streamlit_sortables
+st-star-rating
