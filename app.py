@@ -19,11 +19,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Title
-st.title("🚀 Career Growth Survey")
-
+st.title("📊 Effectiveness of the 9-Box Grid in HR Decision-Making")
 st.markdown("""
-    Thank you for participating in our career growth survey! Your insights will help us better understand professional development within the company.
-    Please answer the following questions honestly.
+    This survey aims to evaluate the effectiveness of the 9-box grid in HR decision-making processes. Your responses will help improve talent assessment methodologies.
 """)
 
 # Email input
@@ -35,93 +33,48 @@ def is_valid_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(pattern, email)
 
-# Job Information
-st.header("💼 Job Information")
+# Section 1: Demographic Information
+st.header("👤 Demographic Information")
+job_role = st.selectbox("**What is your job role?**", ["HR", "People’s Manager", "Individual Contributor", "Other"])
+years_experience = st.radio("**How many years of experience do you have?**", ["0-5", "6-10", "11-15", "15+"])
+org_size = st.radio("**What is the size of your organization?**", ["<100", "100-500", "501-1000", "1001+"])
+uses_9box = st.radio("**Has your organization implemented the 9-box grid for talent assessment?**", ["Yes", "No", "Not Sure"])
 
-job_title = st.text_input("**What is your current job title?**")
-
-years_in_role = st.radio("**How many years have you worked in your current role?**", [
-    "Less than 1 year", "1-2 years", "3-5 years", "6-10 years", "10+ years"
-])
-
-years_in_company = st.radio("**How long have you been with this company?**", [
-    "Less than 1 year", "1-2 years", "3-5 years", "6-10 years", "10+ years"
-])
-
-promotion = st.radio("**Have you received a promotion in the last 2 years?**", [
-    "Yes", "No", "Currently being considered for one"
-])
-
-# Performance Rating
-st.header("📊 Performance Rating")
-
-performance_questions = [
-    "I consistently meet or exceed the goals and targets set for my role.",
-    "I receive positive feedback from my managers and colleagues about my work.",
-    "I handle my core job responsibilities with accuracy and efficiency.",
-    "I take initiative beyond my job description when needed.",
-    "My work has a measurable impact on team or company outcomes."
-]
-
-performance_ratings = {q: st_star_rating(label=q, maxValue=5, defaultValue=0) for q in performance_questions}
-
-# Potential Rating
-st.header("🌟 Potential Rating")
-
-potential_questions = [
-    "I am eager to learn new skills and take on more challenging tasks.",
-    "I adapt quickly to changes and problem-solve effectively.",
-    "I am open to leadership roles or greater responsibilities in the future.",
-    "I consistently seek feedback to improve myself.",
-    "I have a clear vision for my career growth within the company."
-]
-
-potential_ratings = {q: st_star_rating(label=q, maxValue=5, defaultValue=0) for q in potential_questions}
-
-# 9-Box Grid Placement
-st.header("📈 9-Box Grid Placement")
-
-grid_placement = st.radio("**Where do you think you currently stand on the 9-box grid?**", [
-    "High Performance, High Potential", "High Performance, Medium Potential", "High Performance, Low Potential",
-    "Medium Performance, High Potential", "Medium Performance, Medium Potential", "Medium Performance, Low Potential",
-    "Low Performance, High Potential", "Low Performance, Medium Potential", "Low Performance, Low Potential",
-    "I’m not sure"
-])
-
-# Career Support Feedback
-career_feedback = st.text_area("**If you could change one thing about how your company supports your career growth, what would it be?**")
-
-@st.dialog("🌟 Prompt Engineering Tip 🌟 ")
-def tip():
-    st.write("**Struggling to get the right answer from GPT?**")
-    st.write("Try adding this simple instruction at the start of your question:")
-    st.markdown("### *Take a deep breath, solve the problem step by step:*")
-    st.info("This helps GPT slow down and think through each part of the problem carefully, just like a person would. As it encourages the model to break down the problem into manageable steps—mimicking the detailed reasoning often found in its training data—which can lead to more accurate and comprehensive answers.")
-    st.write("**See the difference:**")
-    st.write(" *Before using the prompt:* GPT gave the wrong answer.")
-    st.image("Before.png", "Before Adding the Prompt")
-    st.write("✅ *After using the prompt:* GPT provided the correct answer.")
-    st.image("After1.png")
-    st.image("After2.png", "After Adding the Prompt")
-    st.link_button("Read More", "https://arxiv.org/pdf/2309.03409")
+# Conditional Questions Based on 9-Box Implementation
+if uses_9box == "Yes":
+    st.header("📌 Usage of the 9-Box Grid")
+    usage_frequency = st.radio("**How frequently do you use the 9-box grid?**", ["Quarterly", "Yearly", "Bi-Yearly", "Other"])
+    primary_purpose = st.selectbox("**What is the primary purpose of using the 9-box grid?**", ["Talent Review", "Succession Planning", "Employee Development", "Performance Evaluation", "Other"])
+    ease_of_use = st.radio("**How do you rate the ease of using the 9-box grid?**", ["Very Difficult", "Difficult", "Neutral", "Easy", "Very Easy"])
+    stakeholders = st.multiselect("**Who are the stakeholders involved in the 9-box grid assessment?**", ["HR", "Managers", "Senior Management", "Other"])
+    
+    st.header("📈 Effectiveness of the 9-Box Grid")
+    talent_retention = st.radio("**Have you noticed improvements in talent retention or development?**", ["Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"])
+    succession_usefulness = st.radio("**How useful is the 9-box grid in making succession planning decisions?**", ["Not Useful", "Somewhat Useful", "Neutral", "Useful", "Very Useful"])
+    fairness = st.radio("**Does the 9-box grid provide a fair and unbiased assessment?**", ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"])
+    
+    st.header("⚠️ Challenges and Improvements")
+    challenges = st.multiselect("**What are the main challenges in using the 9-box grid?**", ["Subjectivity", "Lack of Managerial Buy-in", "Difficulty in Implementation", "Lack of Training", "Other"])
+    recommend_9box = st.radio("**Would you recommend the use of the 9-box grid?**", ["Yes", "No", "Maybe"])
+    additional_comments = st.text_area("**Any additional comments or suggestions?**")
+else:
+    st.header("🛠 Talent Assessment Approaches")
+    assessment_methods = st.multiselect("**What methods does your organization use for talent assessment?**", ["Performance Reviews", "Competency-Based Evaluation", "9-Box Grid", "Peer Feedback", "Other"])
+    reason_not_using = st.multiselect("**If your organization does not use the 9-box grid, what are the reasons?**", ["Unfamiliarity", "Preference for Other Methods", "Complexity", "Lack of Resources", "Other"])
+    structured_effectiveness = st.radio("**How effective are structured talent assessment tools?**", ["Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"])
+    adopt_future = st.radio("**Would you be open to adopting the 9-box grid in the future?**", ["Yes", "No", "Maybe"])
+    additional_comments = st.text_area("**Any additional comments or suggestions?**")
 
 # Submission logic
 if st.button("Submit ✅"):
     if not is_valid_email(email):
         st.error("📧 Please enter a valid email address.")
     else:
-        new_row = pd.DataFrame([[
-            job_title, years_in_role, years_in_company, promotion, grid_placement, career_feedback, email,
-            *performance_ratings.values(), *potential_ratings.values()
-        ]], columns=[
-            "Job Title", "Years in Role", "Years in Company", "Promotion", "Grid Placement", "Career Feedback", "Email",
-            *[f"Performance: {q}" for q in performance_questions],
-            *[f"Potential: {q}" for q in potential_questions]
-        ])
+        new_row = pd.DataFrame([[job_role, years_experience, org_size, uses_9box, usage_frequency if uses_9box == "Yes" else "N/A", primary_purpose if uses_9box == "Yes" else "N/A", ease_of_use if uses_9box == "Yes" else "N/A", stakeholders if uses_9box == "Yes" else "N/A", talent_retention if uses_9box == "Yes" else "N/A", succession_usefulness if uses_9box == "Yes" else "N/A", fairness if uses_9box == "Yes" else "N/A", challenges if uses_9box == "Yes" else "N/A", recommend_9box if uses_9box == "Yes" else "N/A", assessment_methods if uses_9box != "Yes" else "N/A", reason_not_using if uses_9box != "Yes" else "N/A", structured_effectiveness if uses_9box != "Yes" else "N/A", adopt_future if uses_9box != "Yes" else "N/A", additional_comments, email]], columns=["Job Role", "Years of Experience", "Organization Size", "Uses 9-Box Grid", "Usage Frequency", "Primary Purpose", "Ease of Use", "Stakeholders", "Talent Retention", "Succession Usefulness", "Fairness", "Challenges", "Recommend 9-Box", "Assessment Methods", "Reason Not Using", "Structured Effectiveness", "Adopt Future", "Additional Comments", "Email"])
         sheet_data = conn.read()
         updated_data = pd.concat([sheet_data, new_row], ignore_index=True)
         conn.update(data=updated_data)
+        updated_data.to_csv("survey_results.csv", index=False)
         st.cache_data.clear()
         st.success("🎉 Thank you for completing the survey! Your feedback is invaluable.")
         st.balloons()
-        # tip()
