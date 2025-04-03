@@ -49,13 +49,16 @@ if st.session_state.page == 1:
     uses_9box = st.radio("**Has your organization implemented the 9-box grid for talent assessment?**", ["Yes", "No", "Not Sure"], index=None)
 
     if st.button("Next ▶️"):
-        st.session_state.uses_9box = uses_9box
-        st.session_state.job_role = job_role
-        st.session_state.email = email
-        st.session_state.years_experience = years_experience
-        st.session_state.org_size = org_size
-        st.session_state.page = 2
-        st.rerun()
+        if not job_role or not years_experience or not org_size or not uses_9box:
+            st.error("❗ Please fill all mandatory fields before proceeding.")
+        else:
+            st.session_state.uses_9box = uses_9box
+            st.session_state.job_role = job_role
+            st.session_state.email = email
+            st.session_state.years_experience = years_experience
+            st.session_state.org_size = org_size
+            st.session_state.page = 2
+            st.rerun()
 
 # Page 2: Conditional Questions
 elif st.session_state.page == 2:
@@ -83,10 +86,15 @@ elif st.session_state.page == 2:
     additional_comments = st.text_area("**Any additional comments?**")
     
     if st.button("Submit ✅"):
-        new_row = pd.DataFrame([[st.session_state.job_role, st.session_state.years_experience, st.session_state.org_size, st.session_state.uses_9box, usage_frequency if st.session_state.uses_9box == "Yes" else "N/A", primary_purpose if st.session_state.uses_9box == "Yes" else "N/A", ease_of_use if st.session_state.uses_9box == "Yes" else "N/A", stakeholders if st.session_state.uses_9box == "Yes" else "N/A", talent_retention if st.session_state.uses_9box == "Yes" else "N/A", succession_usefulness if st.session_state.uses_9box == "Yes" else "N/A", fairness if st.session_state.uses_9box == "Yes" else "N/A", challenges if st.session_state.uses_9box == "Yes" else "N/A", recommend_9box if st.session_state.uses_9box == "Yes" else "N/A", assessment_methods if st.session_state.uses_9box != "Yes" else "N/A", reason_not_using if st.session_state.uses_9box != "Yes" else "N/A", structured_effectiveness if st.session_state.uses_9box != "Yes" else "N/A", adopt_future if st.session_state.uses_9box != "Yes" else "N/A", additional_comments, st.session_state.email]], columns=["Job Role", "Years of Experience", "Organization Size", "Uses 9-Box Grid", "Usage Frequency", "Primary Purpose", "Ease of Use", "Stakeholders", "Talent Retention", "Succession Usefulness", "Fairness", "Challenges", "Recommend 9-Box", "Assessment Methods", "Reason Not Using", "Structured Effectiveness", "Adopt Future", "Additional Comments", "Email"])
-        sheet_data = conn.read()
-        updated_data = pd.concat([sheet_data, new_row], ignore_index=True)
-        conn.update(data=updated_data)
-        st.cache_data.clear()
-        st.success("🎉 Thank you for completing the survey!")
-        st.balloons()
+        if st.session_state.uses_9box == "Yes" and (not usage_frequency or not primary_purpose or not ease_of_use or not talent_retention or not succession_usefulness or not fairness or not recommend_9box or not stakeholders or not challenges):
+            st.error("❗ Please fill all mandatory fields before submitting.")
+        elif st.session_state.uses_9box != "Yes" and (not structured_effectiveness or not adopt_future or not assessment_methods or not reason_not_using):
+            st.error("❗ Please fill all mandatory fields before submitting.")
+        else:
+            new_row = pd.DataFrame([[st.session_state.job_role, st.session_state.years_experience, st.session_state.org_size, st.session_state.uses_9box, usage_frequency if st.session_state.uses_9box == "Yes" else "N/A", primary_purpose if st.session_state.uses_9box == "Yes" else "N/A", ease_of_use if st.session_state.uses_9box == "Yes" else "N/A", stakeholders if st.session_state.uses_9box == "Yes" else "N/A", talent_retention if st.session_state.uses_9box == "Yes" else "N/A", succession_usefulness if st.session_state.uses_9box == "Yes" else "N/A", fairness if st.session_state.uses_9box == "Yes" else "N/A", challenges if st.session_state.uses_9box == "Yes" else "N/A", recommend_9box if st.session_state.uses_9box == "Yes" else "N/A", assessment_methods if st.session_state.uses_9box != "Yes" else "N/A", reason_not_using if st.session_state.uses_9box != "Yes" else "N/A", structured_effectiveness if st.session_state.uses_9box != "Yes" else "N/A", adopt_future if st.session_state.uses_9box != "Yes" else "N/A", additional_comments, st.session_state.email]], columns=["Job Role", "Years of Experience", "Organization Size", "Uses 9-Box Grid", "Usage Frequency", "Primary Purpose", "Ease of Use", "Stakeholders", "Talent Retention", "Succession Usefulness", "Fairness", "Challenges", "Recommend 9-Box", "Assessment Methods", "Reason Not Using", "Structured Effectiveness", "Adopt Future", "Additional Comments", "Email"])
+            sheet_data = conn.read()
+            updated_data = pd.concat([sheet_data, new_row], ignore_index=True)
+            conn.update(data=updated_data)
+            st.cache_data.clear()
+            st.success("🎉 Thank you for completing the survey!")
+            st.balloons()
