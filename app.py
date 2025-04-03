@@ -33,7 +33,7 @@ with st.expander("ℹ️ What is the 9-Box Grid?"):
     It consists of a 3x3 matrix with different categories that help in succession planning, identifying high performers,
     and understanding development needs. The grid is often used in HR discussions to strategize talent management effectively.
     """)
-    st.link_button("Go to Video", "https://youtu.be/B6SZJcydsYc")
+    st.link_button("Go to Video Explaination", "https://youtu.be/B6SZJcydsYc")
 
 # Initialize session state
 if 'page' not in st.session_state:
