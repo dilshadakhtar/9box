@@ -42,10 +42,10 @@ if 'page' not in st.session_state:
 if st.session_state.page == 1:
     st.header("👤 Demographic Information")
     email = st.text_input("**Enter your email (optional):**")
-    job_role = st.selectbox("**What is your job role?**", ["", "HR", "People’s Manager", "Individual Contributor", "Other"], index=0)
-    years_experience = st.radio("**How many years of experience do you have?**", ["", "0-5", "6-10", "11-15", "15+"], index=0)
-    org_size = st.radio("**What is the size of your organization?**", ["", "<100", "100-500", "501-1000", "1001+"], index=0)
-    uses_9box = st.radio("**Has your organization implemented the 9-box grid for talent assessment?**", ["", "Yes", "No", "Not Sure"], index=0)
+    job_role = st.selectbox("**What is your job role?**", ["HR", "People’s Manager", "Individual Contributor", "Other"], default=None)
+    years_experience = st.radio("**How many years of experience do you have?**", ["0-5", "6-10", "11-15", "15+"], default=None)
+    org_size = st.radio("**What is the size of your organization?**", ["<100", "100-500", "501-1000", "1001+"], default=None)
+    uses_9box = st.radio("**Has your organization implemented the 9-box grid for talent assessment?**", ["Yes", "No", "Not Sure"], default=None)
 
     if st.button("Next ▶️"):
         if not job_role or not years_experience or not org_size or not uses_9box:
@@ -65,21 +65,21 @@ if st.session_state.page == 1:
 elif st.session_state.page == 2:
     if st.session_state.uses_9box == "Yes":
         st.header("📌 Usage of the 9-Box Grid")
-        usage_frequency = st.radio("**How frequently do you use the 9-box grid?**", ["", "Quarterly", "Yearly", "Bi-Yearly", "Other"], index=0)
-        primary_purpose = st.selectbox("**Primary purpose of using 9-box?**", ["", "Talent Review", "Succession Planning", "Employee Development", "Performance Evaluation", "Other"], index=0)
-        ease_of_use = st.radio("**Ease of use?**", ["", "Very Difficult", "Difficult", "Neutral", "Easy", "Very Easy"], index=0)
+        usage_frequency = st.radio("**How frequently do you use the 9-box grid?**", ["Quarterly", "Yearly", "Bi-Yearly", "Other"], default=None)
+        primary_purpose = st.selectbox("**Primary purpose of using 9-box?**", ["Talent Review", "Succession Planning", "Employee Development", "Performance Evaluation", "Other"], default=None)
+        ease_of_use = st.radio("**Ease of use?**", ["Very Difficult", "Difficult", "Neutral", "Easy", "Very Easy"], default=None)
         stakeholders = st.multiselect("**Stakeholders involved?**", ["HR", "Managers", "Senior Management", "Other"], default=[])
-        talent_retention = st.radio("**Improved talent retention?**", ["", "Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"], index=0)
-        succession_usefulness = st.radio("**Usefulness for succession planning?**", ["", "Not Useful", "Somewhat Useful", "Neutral", "Useful", "Very Useful"], index=0)
-        fairness = st.radio("**Is the assessment fair?**", ["", "Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"], index=0)
+        talent_retention = st.radio("**Improved talent retention?**", ["Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"], default=None)
+        succession_usefulness = st.radio("**Usefulness for succession planning?**", ["Not Useful", "Somewhat Useful", "Neutral", "Useful", "Very Useful"], default=None)
+        fairness = st.radio("**Is the assessment fair?**", ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"], default=None)
         challenges = st.multiselect("**Challenges faced?**", ["Subjectivity", "Lack of Managerial Buy-in", "Difficulty in Implementation", "Lack of Training", "Other"], default=[])
-        recommend_9box = st.radio("**Would you recommend it?**", ["", "Yes", "No", "Maybe"], index=0)
+        recommend_9box = st.radio("**Would you recommend it?**", ["Yes", "No", "Maybe"], default=None)
     else:
         st.header("🛠 Talent Assessment Approaches")
         assessment_methods = st.multiselect("**Assessment methods used?**", ["Performance Reviews", "Competency-Based Evaluation", "9-Box Grid", "Peer Feedback", "Other"], default=[])
         reason_not_using = st.multiselect("**Reasons for not using 9-box?**", ["Unfamiliarity", "Preference for Other Methods", "Complexity", "Lack of Resources", "Other"], default=[])
-        structured_effectiveness = st.radio("**Are structured tools effective?**", ["", "Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"], index=0)
-        adopt_future = st.radio("**Would you adopt it in future?**", ["", "Yes", "No", "Maybe"], index=0)
+        structured_effectiveness = st.radio("**Are structured tools effective?**", ["Not Effective", "Somewhat Effective", "Neutral", "Effective", "Very Effective"], default=None)
+        adopt_future = st.radio("**Would you adopt it in future?**", ["Yes", "No", "Maybe"], default=None)
     
     additional_comments = st.text_area("**Any additional comments?**")
     
