@@ -21,8 +21,8 @@ st.markdown("""
 # App Title
 st.title("📊 Effectiveness of the 9-Box Grid in HR Decision-Making")
 st.markdown("""
-    This survey aims to evaluate the effectiveness of the 9-box grid in HR decision-making processes.
-    Your responses will help improve talent assessment methodologies.
+We are students from IIM Kozhikode conducting a survey for our Human Resource Management project.  
+This study aims to assess the effectiveness of the 9-box grid in HR decision-making.
 """)
 
 # Explanation for 9-Box Grid
