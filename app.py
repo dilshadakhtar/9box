@@ -25,6 +25,15 @@ st.markdown("""
     Your responses will help improve talent assessment methodologies.
 """)
 
+# Explanation for 9-Box Grid
+with st.expander("ℹ️ What is the 9-Box Grid?"):
+    st.image("9Box.png")
+    st.write("""
+    The 9-box grid is a tool used in talent management to assess employees based on their performance and potential.
+    It consists of a 3x3 matrix with different categories that help in succession planning, identifying high performers,
+    and understanding development needs. The grid is often used in HR discussions to strategize talent management effectively.
+    """)
+
 # Initialize session state
 if 'page' not in st.session_state:
     st.session_state.page = 1
